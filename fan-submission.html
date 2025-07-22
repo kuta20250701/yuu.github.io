@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本文化 - Yuu</title>
+    <title>粉絲投稿 - Yuu 的個人網站</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-       <nav>
-            <div class="logo">Yuu 的世界</div>
+        <nav>
+            <div class="logo">Yuu's Website</div>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -37,31 +37,28 @@
             </ul>
         </nav>
     </header>
-
     <main>
-        <section id="japan">
-            <h2>日本文化</h2>
-            <div class="search-bar">
-                 <input type="text" id="search-input" placeholder="搜尋標題、概述或標籤...">
-                 <button id="search-button">搜尋</button>
-                 <select id="sort-method">
-                     <option value="date">按時間排序</option>
-                     <option value="views">按點閱率排序</option>
-                 </select>
-            </div>
-            <div id="tags"></div>
-            <div id="posts"></div>
-            <p>我愛日本的動漫、美食和風景，這裡會記錄我的日語學習和旅行計畫！</p>
-        </section>
+        <h2 class="fan-submission-title">粉絲投稿</h2>
+        <form id="fan-form" class="center-form">
+            <input type="text" id="fan-name" placeholder="您的姓名" required>
+            <input type="email" id="fan-email" placeholder="您的 Email" required>
+            <select id="fan-category" required>
+                <option value="blog">學習日誌</option>
+                <option value="games">遊戲攻略</option>
+                <option value="japan">日本文化</option>
+                <option value="challenges">挑戰區</option>
+            </select>
+            <textarea id="fan-content" placeholder="投稿內容" required></textarea>
+            <button type="submit">提交</button>
+        </form>
     </main>
-
     <footer>
         <div class="contact">
-            <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>聯絡我: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>電話: 0988-123-456</p>
+            <p>地址: 台北市中山區林森北路123號</p>
         </div>
-        <p>© 2025 Yuu. All rights reserved.</p>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

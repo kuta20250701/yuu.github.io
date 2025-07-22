@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>後台 - Yuu</title>
+    <title>後台管理 - Yuu 的個人網站</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">Yuu 的世界</div>
+            <div class="logo">Yuu's Website</div>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -22,103 +22,88 @@
                 <li><a href="games.html">遊戲攻略</a></li>
                 <li><a href="japan.html">日本文化</a></li>
                 <li><a href="shop.html">二手小店</a></li>
+                <li><a href="challenges.html">挑戰區</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropbtn active">後台</a>
+                    <a href="admin.html" class="active">後台</a>
                     <div class="dropdown-content">
-                        <a href="admin.html#post">後台投稿</a>
-                        <a href="admin.html#manage">文章管理</a>
-                        <a href="admin.html#fan">粉絲投稿</a>
+                        <a href="admin.html#post-section">後台投稿</a>
+                        <a href="admin.html#manage-section">文章管理</a>
+                        <a href="admin.html#shop-manage-section">商店管理</a>
+                        <a href="admin.html#challenge-manage-section">挑戰管理</a>
+                        <a href="admin.html#fan-submission-manage-section">粉絲投稿管理</a>
+                        <a href="fan-submission.html">粉絲投稿</a>
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
-
-    <main>
-        <section id="admin">
-            <div id="login" class="login">
-                <h2>後台登入</h2>
-                <form id="login-form" class="center-form" onsubmit="login(event)">
-                    <label for="password">密碼:</label>
-                    <input type="password" id="password" placeholder="輸入密碼" required>
-                    <button type="submit">登入</button>
-                </form>
-            </div>
-            <div id="post-section" class="hidden">
-                <h2>後台投稿</h2>
-                <form id="post-form" class="center-form">
-                    <label for="post-category">分類:</label>
-                    <select id="post-category" required>
-                        <option value="about">關於我</option>
-                        <option value="blog">學習日誌</option>
-                        <option value="games">遊戲攻略</option>
-                        <option value="japan">日本文化</option>
-                        <option value="shop">二手小店</option>
-                    </select>
-                    <label for="post-tags">標籤 (以逗號分隔):</label>
-                    <input type="text" id="post-tags" placeholder="例如: 日語, 學習">
-                    <label for="post-title">標題:</label>
-                    <input type="text" id="post-title" required>
-                    <label for="post-summary">概述:</label>
-                    <textarea id="post-summary" required></textarea>
-                    <label for="post-content">內文 (支援圖片/音檔):</label>
-                    <textarea id="post-content" required></textarea>
-                    <label for="post-image">上傳圖片:</label>
-                    <input type="file" id="post-image" accept="image/*">
-                    <label for="post-audio">上傳音檔:</label>
-                    <input type="file" id="post-audio" accept="audio/*">
-                    <label for="schedule-date">排程發布時間 (選填):</label>
-                    <input type="datetime-local" id="schedule-date">
-                    <button type="submit">發布</button>
-                </form>
-            </div>
-            <div id="manage-section" class="hidden">
-                <h2>文章管理</h2>
-                <div id="admin-posts"></div>
-            </div>
-            <div id="fan-section">
-                <h2>粉絲投稿</h2>
-                <form id="fan-form" class="center-form">
-                    <label for="fan-name">姓名:</label>
-                    <input type="text" id="fan-name" required>
-                    <label for="fan-email">Email:</label>
-                    <input type="email" id="fan-email" required>
-                    <label for="fan-category">希望投稿至:</label>
-                    <select id="fan-category" required>
-                        <option value="blog">學習日誌</option>
-                        <option value="games">遊戲攻略</option>
-                        <option value="japan">日本文化</option>
-                    </select>
-                    <label for="fan-content">投稿內容:</label>
-                    <textarea id="fan-content" required></textarea>
-                    <button type="submit">提交</button>
-                </form>
-            </div>
-            <div id="shop-manage-section" class="hidden">
-                <h2>商店管理</h2>
-                <form id="product-form" class="center-form">
-                    <label for="product-name">商品名稱:</label>
-                    <input type="text" id="product-name" required>
-                    <label for="product-price">價格:</label>
-                    <input type="number" id="product-price" required>
-                    <label for="product-discount">促銷折扣 (選填, 例如 0.8 表示八折):</label>
-                    <input type="number" id="product-discount" step="0.1" min="0" max="1">
-                    <label for="product-image">商品圖片:</label>
-                    <input type="file" id="product-image" accept="image/*">
-                    <button type="submit">新增商品</button>
-                </form>
-                <div id="products-manage"></div>
-            </div>
+    <main id="admin">
+        <section id="login" class="login center-form">
+            <h2>後台登入</h2>
+            <form onsubmit="login(event)">
+                <input type="password" id="password" placeholder="請輸入密碼" required>
+                <button type="submit">登入</button>
+            </form>
+        </section>
+        <section id="post-section" class="hidden">
+            <h2>後台投稿</h2>
+            <form id="post-form" class="center-form">
+                <select id="post-category" required>
+                    <option value="blog">學習日誌</option>
+                    <option value="games">遊戲攻略</option>
+                    <option value="japan">日本文化</option>
+                </select>
+                <input type="text" id="post-tags" placeholder="標籤 (用逗號分隔)" required>
+                <input type="text" id="post-title" placeholder="標題" required>
+                <textarea id="post-summary" placeholder="摘要" required></textarea>
+                <textarea id="post-content" placeholder="內容" required></textarea>
+                <input type="file" id="post-image" accept="image/*">
+                <input type="file" id="post-audio" accept="audio/*">
+                <input type="datetime-local" id="schedule-date" placeholder="排程發文時間">
+                <button type="submit">發佈</button>
+            </form>
+        </section>
+        <section id="manage-section" class="hidden">
+            <h2>文章管理</h2>
+            <div id="admin-posts"></div>
+        </section>
+        <section id="shop-manage-section" class="hidden">
+            <h2>商店管理</h2>
+            <form id="product-form" class="center-form">
+                <input type="text" id="product-name" placeholder="商品名稱" required>
+                <input type="number" id="product-price" placeholder="價格" required>
+                <input type="number" id="product-discount" placeholder="折扣 (0-1, 例如 0.8 表示 8 折)">
+                <input type="file" id="product-image" accept="image/*">
+                <button type="submit">新增商品</button>
+            </form>
+            <div id="products-manage"></div>
+        </section>
+        <section id="challenge-manage-section" class="hidden">
+            <h2>挑戰管理</h2>
+            <form id="challenge-form" class="center-form">
+                <input type="text" id="challenge-title" placeholder="挑戰名稱" required>
+                <textarea id="challenge-description" placeholder="挑戰描述" required></textarea>
+                <input type="text" id="challenge-rules" placeholder="規則 (用逗號分隔)" required>
+                <input type="text" id="challenge-tags" placeholder="標籤 (用逗號分隔)" required>
+                <input type="number" id="challenge-total-days" placeholder="總天數 (例如 50)" required>
+                <input type="file" id="challenge-image" accept="image/*">
+                <input type="file" id="challenge-audio" accept="audio/*">
+                <button type="submit">新增挑戰</button>
+            </form>
+            <div id="challenges-manage"></div>
+        </section>
+        <section id="fan-submission-manage-section" class="hidden">
+            <h2>粉絲投稿管理</h2>
+            <div id="fan-submissions"></div>
         </section>
     </main>
-
     <footer>
         <div class="contact">
-            <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>聯絡我: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>電話: 0988-123-456</p>
+            <p>地址: 台北市中山區林森北路123號</p>
         </div>
-        <p>© 2025 Yuu. All rights reserved.</p>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

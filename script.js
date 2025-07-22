@@ -4,12 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const postForm = document.getElementById('post-form');
     const productForm = document.getElementById('product-form');
     const fanForm = document.getElementById('fan-form');
+    const challengeForm = document.getElementById('challenge-form');
     const postsContainer = document.getElementById('posts');
     const adminPosts = document.getElementById('admin-posts');
     const latestPosts = document.getElementById('latest-posts');
     const popularPosts = document.getElementById('popular-posts');
     const productsContainer = document.getElementById('products');
     const productsManage = document.getElementById('products-manage');
+    const challengesContainer = document.getElementById('challenges');
+    const challengesManage = document.getElementById('challenges-manage');
+    const fanSubmissions = document.getElementById('fan-submissions');
     const searchInput = document.getElementById('search-input');
     const sortMethod = document.getElementById('sort-method');
     const tagsContainer = document.getElementById('tags');
@@ -17,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const postSection = document.getElementById('post-section');
     const manageSection = document.getElementById('manage-section');
     const shopManageSection = document.getElementById('shop-manage-section');
+    const challengeManageSection = document.getElementById('challenge-manage-section');
+    const fanSubmissionManageSection = document.getElementById('fan-submission-manage-section');
     const searchButton = document.getElementById('search-button');
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('nav ul');
@@ -38,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadPosts() {
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
         const products = JSON.parse(localStorage.getItem('products')) || [];
+        const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+        const fanSubmissionsData = JSON.parse(localStorage.getItem('fanSubmissions')) || [];
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
         const now = new Date();
 
@@ -97,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (tagsContainer) {
-            const allTags = [...new Set(posts.flatMap(post => post.tags))];
+            const allTags = [...new Set([...posts.flatMap(post => post.tags), ...challenges.flatMap(challenge => challenge.tags)])];
             tagsContainer.innerHTML = allTags.map(tag => `<span class="tag" onclick="searchByTag('${tag}')">${tag}</span>`).join('');
         }
 
@@ -175,6 +183,103 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayProducts.appendChild(productElement);
             });
         }
+
+        if (challengesContainer) {
+            challengesContainer.innerHTML = '';
+            let displayChallenges = challenges;
+            if (searchInput && searchInput.value) {
+                const query = searchInput.value.toLowerCase();
+                displayChallenges = challenges.filter(challenge =>
+                    challenge.title.toLowerCase().includes(query) ||
+                    challenge.description.toLowerCase().includes(query) ||
+                    challenge.tags.some(tag => tag.toLowerCase().includes(query))
+                );
+                displayChallenges.sort((a, b) => {
+                    const aScore = (a.title.toLowerCase().includes(query) ? 3 : 0) +
+                        (a.description.toLowerCase().includes(query) ? 2 : 0) +
+                        (a.tags.some(tag => tag.toLowerCase().includes(query)) ? 1 : 0);
+                    const bScore = (b.title.toLowerCase().includes(query) ? 3 : 0) +
+                        (b.description.toLowerCase().includes(query) ? 2 : 0) +
+                        (a.tags.some(tag => tag.toLowerCase().includes(query)) ? 1 : 0);
+                    return bScore - aScore;
+                });
+            } else if (sortMethod && sortMethod.value === 'progress') {
+                displayChallenges.sort((a, b) => (b.progress || 0) - (a.progress || 0));
+            } else {
+                displayChallenges.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+            }
+
+            displayChallenges.forEach(challenge => {
+                const challengeElement = document.createElement('div');
+                challengeElement.classList.add('challenge');
+                const progress = challenge.progress || 0;
+                const totalDays = challenge.totalDays || 50;
+                challengeElement.innerHTML = `
+                    <h3>${challenge.title}</h3>
+                    <p>${challenge.description}</p>
+                    <p>規則: ${challenge.rules.join(', ')}</p>
+                    <p>進度: ${progress}/${totalDays} 天</p>
+                    <div class="tags">${challenge.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                    ${challenge.image ? `<img src="${challenge.image}" alt="${challenge.title}">` : ''}
+                    ${challenge.audio ? `<audio controls src="${challenge.audio}"></audio>` : ''}
+                    <button class="like-btn" onclick="likeChallenge('${challenge.id}')">${challenge.liked ? '★' : '☆'}</button> ${challenge.likes || 0}
+                `;
+                challengeElement.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('like-btn')) return;
+                    challenge.views = (challenge.views || 0) + 1;
+                    localStorage.setItem('challenges', JSON.stringify(challenges));
+                    challengeElement.classList.add('full');
+                    challengeElement.innerHTML = `
+                        <h3>${challenge.title}</h3>
+                        <p>${challenge.description}</p>
+                        <p>規則: ${challenge.rules.join(', ')}</p>
+                        <p>進度: ${progress}/${totalDays} 天</p>
+                        <div>${challenge.updates.map(update => `<p>${update.date}: ${update.note}</p>`).join('')}</div>
+                        ${challenge.image ? `<img src="${challenge.image}" alt="${challenge.title}">` : ''}
+                        ${challenge.audio ? `<audio controls src="${challenge.audio}"></audio>` : ''}
+                        <div class="tags">${challenge.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                        <button class="like-btn" onclick="likeChallenge('${challenge.id}')">${challenge.liked ? '★' : '☆'}</button> ${challenge.likes || 0}
+                    `;
+                });
+                challengesContainer.appendChild(challengeElement);
+            });
+        }
+
+        if (challengesManage) {
+            challengesManage.innerHTML = '';
+            challenges.forEach((challenge, index) => {
+                const challengeElement = document.createElement('div');
+                challengeElement.classList.add('challenge');
+                challengeElement.innerHTML = `
+                    <h3>${challenge.title}</h3>
+                    <p>${challenge.description}</p>
+                    <p>規則: ${challenge.rules.join(', ')}</p>
+                    <p>進度: ${challenge.progress || 0}/${challenge.totalDays} 天</p>
+                    <div class="tags">${challenge.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                    <p>開始日期: ${challenge.startDate}</p>
+                    <p>點閱: ${challenge.views || 0} | 點讚: ${challenge.likes || 0}</p>
+                    <button onclick="deleteChallenge(${index})">刪除</button>
+                `;
+                challengesManage.appendChild(challengeElement);
+            });
+        }
+
+        if (fanSubmissions) {
+            fanSubmissions.innerHTML = '';
+            fanSubmissionsData.forEach((submission, index) => {
+                const submissionElement = document.createElement('div');
+                submissionElement.classList.add('post'); // 使用 .post 樣式，保持一致
+                submissionElement.innerHTML = `
+                    <h3>${submission.name} 的投稿</h3>
+                    <p>Email: ${submission.email}</p>
+                    <p>分類: ${submission.category}</p>
+                    <p>內容: ${submission.content}</p>
+                    <p>提交時間: ${submission.date}</p>
+                    <button onclick="deleteFanSubmission(${index})">刪除</button>
+                `;
+                fanSubmissions.appendChild(submissionElement);
+            });
+        }
     }
 
     if (postForm) {
@@ -231,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (productForm) {
-        postForm.addEventListener('submit', (e) => {
+        productForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('product-name').value;
             const price = parseFloat(document.getElementById('product-price').value);
@@ -264,10 +369,77 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('fan-email').value;
             const category = document.getElementById('fan-category').value;
             const content = document.getElementById('fan-content').value;
+            const fanSubmissionsData = JSON.parse(localStorage.getItem('fanSubmissions')) || [];
+
+            const submission = {
+                id: Date.now().toString(),
+                name,
+                email,
+                category,
+                content,
+                date: new Date().toLocaleString('zh-TW')
+            };
+            fanSubmissionsData.push(submission);
+            localStorage.setItem('fanSubmissions', JSON.stringify(fanSubmissionsData));
+
             const subject = `粉絲投稿 - ${category}`;
             const body = `姓名: ${name}\nEmail: ${email}\n分類: ${category}\n內容: ${content}`;
             window.location.href = `mailto:yuunet.07@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
             fanForm.reset();
+            loadPosts();
+        });
+    }
+
+    if (challengeForm) {
+        challengeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('challenge-title').value;
+            const description = document.getElementById('challenge-description').value;
+            const rules = document.getElementById('challenge-rules').value.split(',').map(rule => rule.trim()).filter(rule => rule);
+            const tags = document.getElementById('challenge-tags').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+            const totalDays = parseInt(document.getElementById('challenge-total-days').value);
+            const image = document.getElementById('challenge-image').files[0];
+            const audio = document.getElementById('challenge-audio').files[0];
+            const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+
+            if (image) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    saveChallenge(reader.result, null);
+                };
+                reader.readAsDataURL(image);
+            } else if (audio) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    saveChallenge(null, reader.result);
+                };
+                reader.readAsDataURL(audio);
+            } else {
+                saveChallenge(null, null);
+            }
+
+            function saveChallenge(image, audio) {
+                const challenge = {
+                    id: Date.now().toString(),
+                    title,
+                    description,
+                    rules,
+                    tags,
+                    totalDays,
+                    progress: 0,
+                    startDate: new Date().toLocaleString('zh-TW'),
+                    updates: [],
+                    image,
+                    audio,
+                    views: 0,
+                    likes: 0,
+                    liked: false
+                };
+                challenges.push(challenge);
+                localStorage.setItem('challenges', JSON.stringify(challenges));
+                challengeForm.reset();
+                loadPosts();
+            }
         });
     }
 
@@ -279,6 +451,8 @@ document.addEventListener('DOMContentLoaded', () => {
             postSection.classList.remove('hidden');
             manageSection.classList.remove('hidden');
             shopManageSection.classList.remove('hidden');
+            challengeManageSection.classList.remove('hidden');
+            fanSubmissionManageSection.classList.remove('hidden');
             loadPosts();
             document.getElementById('password').value = '';
         } else {
@@ -296,10 +470,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.deleteProduct = (index) => {
-        const posts = JSON.parse(localStorage.getItem('posts')) || [];
         const products = JSON.parse(localStorage.getItem('products')) || [];
         products.splice(index, 1);
         localStorage.setItem('products', JSON.stringify(products));
+        loadPosts();
+    };
+
+    window.deleteChallenge = (index) => {
+        const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+        challenges.splice(index, 1);
+        localStorage.setItem('challenges', JSON.stringify(challenges));
+        loadPosts();
+    };
+
+    window.deleteFanSubmission = (index) => {
+        const fanSubmissionsData = JSON.parse(localStorage.getItem('fanSubmissions')) || [];
+        fanSubmissionsData.splice(index, 1);
+        localStorage.setItem('fanSubmissions', JSON.stringify(fanSubmissionsData));
         loadPosts();
     };
 
@@ -310,6 +497,17 @@ document.addEventListener('DOMContentLoaded', () => {
             post.liked = !post.liked;
             post.likes = (post.likes || 0) + (post.liked ? 1 : -1);
             localStorage.setItem('posts', JSON.stringify(posts));
+            loadPosts();
+        }
+    };
+
+    window.likeChallenge = (id) => {
+        const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+        const challenge = challenges.find(c => c.id === id);
+        if (challenge) {
+            challenge.liked = !challenge.liked;
+            challenge.likes = (challenge.likes || 0) + (challenge.liked ? 1 : -1);
+            localStorage.setItem('challenges', JSON.stringify(challenges));
             loadPosts();
         }
     };
@@ -326,9 +524,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchButton) searchButton.addEventListener('click', loadPosts);
 
     if (window.location.hash) {
-        const postId = window.location.hash.substring(1);
+        const id = window.location.hash.substring(1);
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
-        const post = posts.find(p => p.id === postId);
+        const challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+        const post = posts.find(p => p.id === id);
+        const challenge = challenges.find(c => c.id === id);
         if (post && postsContainer) {
             postsContainer.innerHTML = '';
             const postElement = document.createElement('div');
@@ -340,6 +540,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="like-btn" onclick="likePost('${post.id}')">${post.liked ? '★' : '☆'}</button> ${post.likes || 0}
             `;
             postsContainer.appendChild(postElement);
+        } else if (challenge && challengesContainer) {
+            challengesContainer.innerHTML = '';
+            const challengeElement = document.createElement('div');
+            challengeElement.classList.add('challenge', 'full');
+            challengeElement.innerHTML = `
+                <h3>${challenge.title}</h3>
+                <p>${challenge.description}</p>
+                <p>規則: ${challenge.rules.join(', ')}</p>
+                <p>進度: ${challenge.progress || 0}/${challenge.totalDays} 天</p>
+                <div>${challenge.updates.map(update => `<p>${update.date}: ${update.note}</p>`).join('')}</div>
+                ${challenge.image ? `<img src="${challenge.image}" alt="${challenge.title}">` : ''}
+                ${challenge.audio ? `<audio controls src="${challenge.audio}"></audio>` : ''}
+                <div class="tags">${challenge.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
+                <button class="like-btn" onclick="likeChallenge('${challenge.id}')">${challenge.liked ? '★' : '☆'}</button> ${challenge.likes || 0}
+            `;
+            challengesContainer.appendChild(challengeElement);
         }
     }
 

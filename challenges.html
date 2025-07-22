@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>日本文化 - Yuu</title>
+    <title>挑戰區 - Yuu 的個人網站</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-       <nav>
+        <nav>
             <div class="logo">Yuu 的世界</div>
             <div class="hamburger">
                 <span></span>
@@ -22,46 +22,39 @@
                 <li><a href="games.html">遊戲攻略</a></li>
                 <li><a href="japan.html">日本文化</a></li>
                 <li><a href="shop.html">二手小店</a></li>
-                <li><a href="challenges.html">挑戰區</a></li>
+                <li><a href="challenges.html" class="active">挑戰區</a></li>
                 <li class="dropdown">
                     <a href="admin.html">後台</a>
                     <div class="dropdown-content">
                         <a href="admin.html#post-section">後台投稿</a>
                         <a href="admin.html#manage-section">文章管理</a>
                         <a href="admin.html#shop-manage-section">商店管理</a>
-                        <a href="admin.html#challenge-manage-section">挑戰管理</a>
-                        <a href="admin.html#fan-submission-manage-section">粉絲投稿管理</a>
-                        <a href="fan-submission.html" class="active">粉絲投稿</a>
+                        <a href="fan-submission.html">粉絲投稿</a>
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
-
     <main>
-        <section id="japan">
-            <h2>日本文化</h2>
-            <div class="search-bar">
-                 <input type="text" id="search-input" placeholder="搜尋標題、概述或標籤...">
-                 <button id="search-button">搜尋</button>
-                 <select id="sort-method">
-                     <option value="date">按時間排序</option>
-                     <option value="views">按點閱率排序</option>
-                 </select>
-            </div>
-            <div id="tags"></div>
-            <div id="posts"></div>
-            <p>我愛日本的動漫、美食和風景，這裡會記錄我的日語學習和旅行計畫！</p>
-        </section>
+        <h2>挑戰區</h2>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="搜尋挑戰...">
+            <select id="sort-method">
+                <option value="date">按日期排序</option>
+                <option value="progress">按進度排序</option>
+            </select>
+            <button id="search-button">搜尋</button>
+        </div>
+        <div id="tags"></div>
+        <div id="challenges"></div>
     </main>
-
     <footer>
         <div class="contact">
-            <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>聯絡我: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+            <p>電話: 0988-123-456</p>
+            <p>地址: 台北市中山區林森北路123號</p>
         </div>
-        <p>© 2025 Yuu. All rights reserved.</p>
     </footer>
-
     <script src="script.js"></script>
 </body>
 </html>

@@ -135,8 +135,12 @@ h2 {
     text-align: center;
 }
 
-:where(#about, #blog, #games, #japan, #shop) h2 {
+:where(#about, #blog, #games, #japan, #shop, #challenges) h2 {
     text-align: left;
+}
+
+.fan-submission-title {
+    text-align: center;
 }
 
 .search-bar {
@@ -183,7 +187,7 @@ h2 {
     background-color: #aaa;
 }
 
-.post {
+.post, .challenge {
     background-color: #fff;
     padding: 1rem;
     margin: 1rem 0;
@@ -192,17 +196,17 @@ h2 {
     cursor: pointer;
 }
 
-.post.full {
+.post.full, .challenge.full {
     cursor: default;
 }
 
-.post img {
+.post img, .challenge img {
     max-width: 100%;
     height: auto;
     margin: 0.5rem 0;
 }
 
-.post audio {
+.post audio, .challenge audio {
     width: 100%;
     margin: 0.5rem 0;
 }
@@ -238,6 +242,18 @@ form {
 .center-form {
     margin: 1rem auto;
     max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.center-form input,
+.center-form textarea,
+.center-form select,
+.center-form button {
+    width: 100%;
+    max-width: 500px;
+    box-sizing: border-box;
 }
 
 input, textarea, select, button {
@@ -342,5 +358,13 @@ footer .contact a:hover {
     .profile-img {
         width: 200px;
         height: 200px;
+    }
+
+    .center-form input,
+    .center-form textarea,
+    .center-form select,
+    .center-form button {
+        width: 100%;
+        max-width: 100%;
     }
 }
