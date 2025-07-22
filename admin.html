@@ -9,7 +9,7 @@
 <body>
     <header>
         <nav>
-            <div class="logo">Yuu's Website</div>
+            <div class="logo">Yuu 的世界</div>
             <div class="hamburger">
                 <span></span>
                 <span></span>
@@ -69,10 +69,19 @@
         </section>
         <section id="shop-manage-section" class="hidden">
             <h2>商店管理</h2>
-            <form id="product-form" class="center-form">
+            <form id="product-form" class="center-form" onsubmit="addProduct(event)">
                 <input type="text" id="product-name" placeholder="商品名稱" required>
                 <input type="number" id="product-price" placeholder="價格" required>
-                <input type="number" id="product-discount" placeholder="折扣 (0-1, 例如 0.8 表示 8 折)">
+                <input type="number" id="product-discount" placeholder="折扣 (0-1, 例如 0.8 表示 8 折)" step="0.1" min="0" max="1">
+                <textarea id="product-description" placeholder="商品說明" required></textarea>
+                <select id="product-condition" required>
+                    <option value="">選擇損壞程度 (1-5)</option>
+                    <option value="1">1 - 嚴重損壞</option>
+                    <option value="2">2 - 中度損壞</option>
+                    <option value="3">3 - 輕度損壞</option>
+                    <option value="4">4 - 幾乎全新</option>
+                    <option value="5">5 - 全新</option>
+                </select>
                 <input type="file" id="product-image" accept="image/*">
                 <button type="submit">新增商品</button>
             </form>
@@ -101,6 +110,7 @@
         <div class="contact">
             <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
         </div>
+        <p>© 2025 Yuu. All rights reserved.</p>
     </footer>
     <script src="script.js"></script>
 </body>
