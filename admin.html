@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>後台 - Yuu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Yuu 的世界</div>
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html">關於我</a></li>
+                <li><a href="blog.html">學習日誌</a></li>
+                <li><a href="games.html">遊戲攻略</a></li>
+                <li><a href="japan.html">日本文化</a></li>
+                <li><a href="shop.html">二手小店</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn active">後台</a>
+                    <div class="dropdown-content">
+                        <a href="admin.html#post">後台投稿</a>
+                        <a href="admin.html#manage">文章管理</a>
+                        <a href="admin.html#fan">粉絲投稿</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="admin">
+            <div id="login" class="login">
+                <h2>後台登入</h2>
+                <form id="login-form" class="center-form" onsubmit="login(event)">
+                    <label for="password">密碼:</label>
+                    <input type="password" id="password" placeholder="輸入密碼" required>
+                    <button type="submit">登入</button>
+                </form>
+            </div>
+            <div id="post-section" class="hidden">
+                <h2>後台投稿</h2>
+                <form id="post-form" class="center-form">
+                    <label for="post-category">分類:</label>
+                    <select id="post-category" required>
+                        <option value="about">關於我</option>
+                        <option value="blog">學習日誌</option>
+                        <option value="games">遊戲攻略</option>
+                        <option value="japan">日本文化</option>
+                        <option value="shop">二手小店</option>
+                    </select>
+                    <label for="post-tags">標籤 (以逗號分隔):</label>
+                    <input type="text" id="post-tags" placeholder="例如: 日語, 學習">
+                    <label for="post-title">標題:</label>
+                    <input type="text" id="post-title" required>
+                    <label for="post-summary">概述:</label>
+                    <textarea id="post-summary" required></textarea>
+                    <label for="post-content">內文 (支援圖片/音檔):</label>
+                    <textarea id="post-content" required></textarea>
+                    <label for="post-image">上傳圖片:</label>
+                    <input type="file" id="post-image" accept="image/*">
+                    <label for="post-audio">上傳音檔:</label>
+                    <input type="file" id="post-audio" accept="audio/*">
+                    <label for="schedule-date">排程發布時間 (選填):</label>
+                    <input type="datetime-local" id="schedule-date">
+                    <button type="submit">發布</button>
+                </form>
+            </div>
+            <div id="manage-section" class="hidden">
+                <h2>文章管理</h2>
+                <div id="admin-posts"></div>
+            </div>
+            <div id="fan-section">
+                <h2>粉絲投稿</h2>
+                <form id="fan-form" class="center-form">
+                    <label for="fan-name">姓名:</label>
+                    <input type="text" id="fan-name" required>
+                    <label for="fan-email">Email:</label>
+                    <input type="email" id="fan-email" required>
+                    <label for="fan-category">希望投稿至:</label>
+                    <select id="fan-category" required>
+                        <option value="blog">學習日誌</option>
+                        <option value="games">遊戲攻略</option>
+                        <option value="japan">日本文化</option>
+                    </select>
+                    <label for="fan-content">投稿內容:</label>
+                    <textarea id="fan-content" required></textarea>
+                    <button type="submit">提交</button>
+                </form>
+            </div>
+            <div id="shop-manage-section" class="hidden">
+                <h2>商店管理</h2>
+                <form id="product-form" class="center-form">
+                    <label for="product-name">商品名稱:</label>
+                    <input type="text" id="product-name" required>
+                    <label for="product-price">價格:</label>
+                    <input type="number" id="product-price" required>
+                    <label for="product-discount">促銷折扣 (選填, 例如 0.8 表示八折):</label>
+                    <input type="number" id="product-discount" step="0.1" min="0" max="1">
+                    <label for="product-image">商品圖片:</label>
+                    <input type="file" id="product-image" accept="image/*">
+                    <button type="submit">新增商品</button>
+                </form>
+                <div id="products-manage"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="contact">
+            <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+        </div>
+        <p>© 2025 Yuu. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

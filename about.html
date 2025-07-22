@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>關於我 - Yuu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Yuu 的世界</div>
+            <ul>
+                <li><a href="index.html">首頁</a></li>
+                <li><a href="about.html" class="active">關於我</a></li>
+                <li><a href="blog.html">學習日誌</a></li>
+                <li><a href="games.html">遊戲攻略</a></li>
+                <li><a href="japan.html">日本文化</a></li>
+                <li><a href="shop.html">二手小店</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">後台</a>
+                    <div class="dropdown-content">
+                        <a href="admin.html#post">後台投稿</a>
+                        <a href="admin.html#manage">文章管理</a>
+                        <a href="admin.html#fan">粉絲投稿</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="about">
+            <h2>關於我</h2>
+            <p>嗨！我是 Yuu，即將升讀法律系大一，目標是成為律師或法官。我熱愛遊戲、漫畫和日本文化，夢想用每月1萬元的預算去日本旅行。我正在學日語，計畫學韓語、德語和英文。我也喜歡畫插畫、嘗試遊戲開發，還想賣點二手書和紙膠帶，存錢實現夢想！</p>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="搜尋標題、概述或標籤...">
+                <button id="search-button">搜尋</button>
+                <select id="sort-method">
+                    <option value="date">按時間排序</option>
+                    <option value="views">按點閱率排序</option>
+                </select>
+            </div>
+            <div id="tags"></div>
+            <div id="posts"></div>
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="contact">
+            <p>IG: <a href="https://instagram.com/yuu">yuu</a> | Email: <a href="mailto:yuunet.07@gmail.com">yuunet.07@gmail.com</a></p>
+        </div>
+        <p>© 2025 Yuu. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
