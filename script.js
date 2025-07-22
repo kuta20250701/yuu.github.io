@@ -1,4 +1,4 @@
-const ADMIN_PASSWORD = 'yuu123';
+const ADMIN_PASSWORD = 'yuu2025network';
 
 document.addEventListener('DOMContentLoaded', () => {
     const postForm = document.getElementById('post-form');
