@@ -1,4 +1,4 @@
-const ADMIN_PASSWORD = 'yuu2025network'; // 預設密碼，可後續修改
+const ADMIN_PASSWORD = 'yuu123';
 
 document.addEventListener('DOMContentLoaded', () => {
     const postForm = document.getElementById('post-form');
@@ -18,21 +18,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const manageSection = document.getElementById('manage-section');
     const shopManageSection = document.getElementById('shop-manage-section');
     const searchButton = document.getElementById('search-button');
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('nav ul');
 
-    // Load posts and products from localStorage
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+    }
+
     function loadPosts() {
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
         const products = JSON.parse(localStorage.getItem('products')) || [];
         const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
         const now = new Date();
 
-        // Filter posts by category and schedule
         const filteredPosts = posts.filter(post => {
             if (post.schedule && new Date(post.schedule) > now) return false;
             return currentPage === 'index' ? true : post.category === currentPage;
         });
 
-        // Search and sort posts
         if (postsContainer) {
             postsContainer.innerHTML = '';
             let displayPosts = filteredPosts;
@@ -58,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 displayPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
             }
 
-            // Display posts
             displayPosts.forEach(post => {
                 const postElement = document.createElement('div');
                 postElement.classList.add('post');
@@ -84,13 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Display tags
         if (tagsContainer) {
             const allTags = [...new Set(posts.flatMap(post => post.tags))];
             tagsContainer.innerHTML = allTags.map(tag => `<span class="tag" onclick="searchByTag('${tag}')">${tag}</span>`).join('');
         }
 
-        // Latest and popular posts on index
         if (latestPosts && popularPosts) {
             latestPosts.innerHTML = '';
             popularPosts.innerHTML = '';
@@ -132,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Admin posts
         if (adminPosts) {
             adminPosts.innerHTML = '';
             posts.forEach((post, index) => {
@@ -150,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Products
         if (productsContainer || productsManage) {
             const displayProducts = productsContainer || productsManage;
             displayProducts.innerHTML = '';
@@ -169,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Save post
     if (postForm) {
         postForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -183,7 +190,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const schedule = document.getElementById('schedule-date').value;
             const posts = JSON.parse(localStorage.getItem('posts')) || [];
 
-            // Handle image and audio
             if (image) {
                 const reader = new FileReader();
                 reader.onload = () => {
@@ -224,9 +230,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Save product
     if (productForm) {
-        productForm.addEventListener('submit', (e) => {
+        postForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('product-name').value;
             const price = parseFloat(document.getElementById('product-price').value);
@@ -252,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Fan submission
     if (fanForm) {
         fanForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -267,9 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Login
     window.login = (event) => {
-        event.preventDefault(); // 阻止表單預設提交
+        event.preventDefault();
         const password = document.getElementById('password').value;
         if (password === ADMIN_PASSWORD) {
             loginSection.classList.add('hidden');
@@ -277,15 +280,14 @@ document.addEventListener('DOMContentLoaded', () => {
             manageSection.classList.remove('hidden');
             shopManageSection.classList.remove('hidden');
             loadPosts();
-            document.getElementById('password').value = ''; // 清空密碼
+            document.getElementById('password').value = '';
         } else {
             alert('密碼錯誤，請重新輸入');
-            document.getElementById('password').value = ''; // 清空密碼
-            document.getElementById('password').focus(); // 聚焦輸入框
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
         }
     };
 
-    // Delete post
     window.deletePost = (index) => {
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
         posts.splice(index, 1);
@@ -293,15 +295,14 @@ document.addEventListener('DOMContentLoaded', () => {
         loadPosts();
     };
 
-    // Delete product
     window.deleteProduct = (index) => {
+        const posts = JSON.parse(localStorage.getItem('posts')) || [];
         const products = JSON.parse(localStorage.getItem('products')) || [];
         products.splice(index, 1);
-        localStorage.setItem('products', JSON.stringify(posts));
+        localStorage.setItem('products', JSON.stringify(products));
         loadPosts();
     };
 
-    // Like post
     window.likePost = (id) => {
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
         const post = posts.find(p => p.id === id);
@@ -313,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Search by tag
     window.searchByTag = (tag) => {
         if (searchInput) {
             searchInput.value = tag;
@@ -321,12 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Search and sort listeners
     if (searchInput) searchInput.addEventListener('input', loadPosts);
     if (sortMethod) sortMethod.addEventListener('change', loadPosts);
     if (searchButton) searchButton.addEventListener('click', loadPosts);
 
-    // Load specific post if hash exists
     if (window.location.hash) {
         const postId = window.location.hash.substring(1);
         const posts = JSON.parse(localStorage.getItem('posts')) || [];
