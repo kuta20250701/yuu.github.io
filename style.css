@@ -131,11 +131,11 @@ h2 {
     color: #444;
 }
 
-:where(#home, #admin) h2 {
+:where(#首頁, #後台) h2 {
     text-align: center;
 }
 
-:where(#about, #blog, #games, #japan, #shop, #challenges) h2 {
+:where(#關於我, #學習日誌, #遊戲攻略, #日本文化, #二手小店, #挑戰區) h2 {
     text-align: left;
 }
 
@@ -277,6 +277,12 @@ button:hover {
 
 .login {
     text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+#login {
+    margin-top: 0;
 }
 
 .hidden {
@@ -363,3 +369,4 @@ footer .contact a:hover {
         max-width: 100%;
     }
 }
+

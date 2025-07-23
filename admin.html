@@ -6,8 +6,8 @@
     <title>後台管理 - Yuu 的個人網站</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <header>
+<body id="後台">
+   <header>
         <nav>
             <div class="logo">Yuu 的世界</div>
             <div class="hamburger">
@@ -24,58 +24,62 @@
                 <li><a href="shop.html">二手小店</a></li>
                 <li><a href="challenges.html">挑戰區</a></li>
                 <li class="dropdown">
-                    <a href="admin.html" class="active">後台</a>
+                    <a href="admin.html">後台</a>
                     <div class="dropdown-content">
                         <a href="admin.html#post-section">後台投稿</a>
                         <a href="admin.html#manage-section">文章管理</a>
                         <a href="admin.html#shop-manage-section">商店管理</a>
                         <a href="admin.html#challenge-manage-section">挑戰管理</a>
                         <a href="admin.html#fan-submission-manage-section">粉絲投稿管理</a>
-                        <a href="fan-submission.html">粉絲投稿</a>
+                        <a href="fan-submission.html" class="active">粉絲投稿</a>
                     </div>
                 </li>
             </ul>
         </nav>
     </header>
     <main id="admin">
+       
         <section id="login" class="login center-form">
-            <h2>後台登入</h2>
+             <h2>後台登入</h2>
             <form onsubmit="login(event)">
                 <input type="password" id="password" placeholder="請輸入密碼" required>
                 <button type="submit">登入</button>
             </form>
         </section>
+
         <section id="post-section" class="hidden">
             <h2>後台投稿</h2>
-            <form id="post-form" class="center-form">
-                <select id="post-category" required>
-                    <option value="blog">學習日誌</option>
-                    <option value="games">遊戲攻略</option>
-                    <option value="japan">日本文化</option>
+            <form id="post-form" onsubmit="addPost(event)">
+                <select id="post-category">
+                    <option value="學習日誌">學習日誌</option>
+                    <option value="遊戲攻略">遊戲攻略</option>
+                    <option value="日本文化">日本文化</option>
                 </select>
-                <input type="text" id="post-tags" placeholder="標籤 (用逗號分隔)" required>
+                <input type="text" id="post-tags" placeholder="標籤 (以逗號分隔)">
                 <input type="text" id="post-title" placeholder="標題" required>
-                <textarea id="post-summary" placeholder="摘要" required></textarea>
+                <input type="text" id="post-summary" placeholder="摘要" required>
                 <textarea id="post-content" placeholder="內容" required></textarea>
                 <input type="file" id="post-image" accept="image/*">
                 <input type="file" id="post-audio" accept="audio/*">
-                <input type="datetime-local" id="schedule-date" placeholder="排程發文時間">
+                <input type="date" id="schedule-date" placeholder="排程發佈日期">
                 <button type="submit">發佈</button>
             </form>
         </section>
+
         <section id="manage-section" class="hidden">
             <h2>文章管理</h2>
             <div id="admin-posts"></div>
         </section>
+
         <section id="shop-manage-section" class="hidden">
             <h2>商店管理</h2>
-            <form id="product-form" class="center-form" onsubmit="addProduct(event)">
+            <form id="product-form" onsubmit="addProduct(event)">
                 <input type="text" id="product-name" placeholder="商品名稱" required>
                 <input type="number" id="product-price" placeholder="價格" required>
-                <input type="number" id="product-discount" placeholder="折扣 (0-1, 例如 0.8 表示 8 折)" step="0.1" min="0" max="1">
-                <textarea id="product-description" placeholder="商品說明" required></textarea>
-                <select id="product-condition" required>
-                    <option value="">選擇損壞程度 (1-5)</option>
+                <input type="number" id="product-discount" placeholder="折扣價格（選填）">
+                <textarea id="product-description" placeholder="商品說明"></textarea>
+                <select id="product-condition">
+                    <option value="0">選擇損壞程度 (1-5)</option>
                     <option value="1">1 - 嚴重損壞</option>
                     <option value="2">2 - 中度損壞</option>
                     <option value="3">3 - 輕度損壞</option>
@@ -87,24 +91,27 @@
             </form>
             <div id="products-manage"></div>
         </section>
+
         <section id="challenge-manage-section" class="hidden">
             <h2>挑戰管理</h2>
-            <form id="challenge-form" class="center-form">
-                <input type="text" id="challenge-title" placeholder="挑戰名稱" required>
+            <form id="challenge-form" onsubmit="addChallenge(event)">
+                <input type="text" id="challenge-title" placeholder="挑戰標題" required>
                 <textarea id="challenge-description" placeholder="挑戰描述" required></textarea>
-                <input type="text" id="challenge-rules" placeholder="規則 (用逗號分隔)" required>
-                <input type="text" id="challenge-tags" placeholder="標籤 (用逗號分隔)" required>
-                <input type="number" id="challenge-total-days" placeholder="總天數 (例如 50)" required>
+                <input type="text" id="challenge-rules" placeholder="規則 (以逗號分隔)" required>
+                <input type="text" id="challenge-tags" placeholder="標籤 (以逗號分隔)">
+                <input type="number" id="challenge-total-days" placeholder="總天數" required>
                 <input type="file" id="challenge-image" accept="image/*">
                 <input type="file" id="challenge-audio" accept="audio/*">
                 <button type="submit">新增挑戰</button>
             </form>
             <div id="challenges-manage"></div>
         </section>
+
         <section id="fan-submission-manage-section" class="hidden">
             <h2>粉絲投稿管理</h2>
             <div id="fan-submissions"></div>
         </section>
+
     </main>
     <footer>
         <div class="contact">
@@ -115,3 +122,53 @@
     <script src="script.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+        
+    
+    
+    
+
+        
+
+      
+       
+
+        
+        
+
+
+    
+        
+         
+
+            
+                
+                    
+                
+
+
+        
+    
+    
+        
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+        
+    
+    
+        

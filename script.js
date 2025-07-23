@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     loadProducts();
     loadChallenges();
     loadFanSubmissions();
+
+    // 添加全局錯誤處理以診斷問題
+    window.onerror = function (message, source, lineno, colno, error) {
+        console.error('JavaScript 錯誤:', message, '於', source, '行', lineno);
+    };
 });
 
 // 後台登入
@@ -35,7 +40,9 @@ function login(event) {
 // 文章管理
 function addPost(event) {
     event.preventDefault();
+    console.log('addPost 函數被呼叫'); // 檢查表單提交
     const category = document.getElementById('post-category').value;
+    console.log('文章類別:', category); // 檢查類別
     const tags = document.getElementById('post-tags').value.split(',').map(tag => tag.trim());
     const title = document.getElementById('post-title').value;
     const summary = document.getElementById('post-summary').value;
@@ -62,6 +69,7 @@ function addPost(event) {
         let posts = JSON.parse(localStorage.getItem('posts')) || [];
         posts.push(post);
         localStorage.setItem('posts', JSON.stringify(posts));
+        console.log('保存的貼文:', post); // 檢查保存的貼文
         document.getElementById('post-form').reset();
         loadPosts();
     };
@@ -87,6 +95,8 @@ function addPost(event) {
 
 function loadPosts() {
     let posts = JSON.parse(localStorage.getItem('posts')) || [];
+    console.log('當前頁面 ID:', document.body.id); // 檢查頁面 ID
+    console.log('所有貼文:', posts); // 檢查 localStorage 中的貼文
     const adminContainer = document.getElementById('admin-posts');
     const blogContainer = document.getElementById('posts');
     const latestPosts = document.getElementById('latest-posts');
@@ -113,22 +123,23 @@ function loadPosts() {
 
     if (blogContainer) {
         blogContainer.innerHTML = '';
-        posts.filter(post => !post.schedule || new Date(post.schedule) <= new Date())
-             .filter(post => post.category === document.body.id)
-             .forEach(post => {
-                 let div = document.createElement('div');
-                 div.className = 'post';
-                 div.innerHTML = `
-                     <h3>${post.title}</h3>
-                     <p>${post.summary}</p>
-                     <div>${post.content}</div>
-                     <p>標籤: ${post.tags.join(', ')}</p>
-                     <p>發文時間: ${post.date}</p>
-                     <p>瀏覽量: ${post.views}</p>
-                     <button class="like-btn" onclick="likePost('${post.id}')">${post.liked ? '❤️' : '🤍'} ${post.likes}</button>
-                 `;
-                 blogContainer.appendChild(div);
-             });
+        const filteredPosts = posts.filter(post => !post.schedule || new Date(post.schedule) <= new Date())
+                                 .filter(post => post.category === document.body.id);
+        console.log('過濾後的貼文:', filteredPosts); // 檢查過濾結果
+        filteredPosts.forEach(post => {
+            let div = document.createElement('div');
+            div.className = 'post';
+            div.innerHTML = `
+                <h3>${post.title}</h3>
+                <p>${post.summary}</p>
+                <div>${post.content}</div>
+                <p>標籤: ${post.tags.join(', ')}</p>
+                <p>發文時間: ${post.date}</p>
+                <p>瀏覽量: ${post.views}</p>
+                <button class="like-btn" onclick="likePost('${post.id}')">${post.liked ? '❤️' : '🤍'} ${post.likes}</button>
+            `;
+            blogContainer.appendChild(div);
+        });
     }
 
     if (latestPosts) {
@@ -264,7 +275,9 @@ function deleteProduct(index) {
 // 挑戰管理
 function addChallenge(event) {
     event.preventDefault();
+    console.log('addChallenge 函數被呼叫'); // 檢查表單提交
     const title = document.getElementById('challenge-title').value;
+    console.log('挑戰標題:', title); // 檢查標題
     const description = document.getElementById('challenge-description').value;
     const rules = document.getElementById('challenge-rules').value.split(',').map(rule => rule.trim());
     const tags = document.getElementById('challenge-tags').value.split(',').map(tag => tag.trim());
@@ -285,6 +298,7 @@ function addChallenge(event) {
         let challenges = JSON.parse(localStorage.getItem('challenges')) || [];
         challenges.push(challenge);
         localStorage.setItem('challenges', JSON.stringify(challenges));
+        console.log('保存的挑戰:', challenge); // 檢查保存的挑戰
         document.getElementById('challenge-form').reset();
         loadChallenges();
     };
@@ -308,6 +322,7 @@ function addChallenge(event) {
 
 function loadChallenges() {
     let challenges = JSON.parse(localStorage.getItem('challenges')) || [];
+    console.log('所有挑戰:', challenges); // 檢查 localStorage 中的挑戰
     const adminContainer = document.getElementById('challenges-manage');
     const challengeContainer = document.getElementById('challenges');
 
@@ -331,6 +346,7 @@ function loadChallenges() {
 
     if (challengeContainer) {
         challengeContainer.innerHTML = '';
+        console.log('挑戰容器存在，顯示挑戰:', challenges); // 檢查顯示的挑戰
         challenges.forEach(challenge => {
             let div = document.createElement('div');
             div.className = 'challenge';
@@ -438,3 +454,4 @@ function deleteSubmission(index) {
         loadFanSubmissions();
     }
 }
+
